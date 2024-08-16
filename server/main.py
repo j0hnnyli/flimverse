@@ -1,11 +1,16 @@
 from flask import Flask, jsonify
 from flask_cors import CORS # type: ignore
 import requests
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-TMDB_API_KEY = '0a9f16f7f01a21ad6cfb390c99400212'
+TMDB_API_KEY = os.getenv('TMDB_API_READ_ACCESS')
 JIKAN_BASE_URL = 'https://api.jikan.moe/v4'
 
 @app.route('/hello')
@@ -31,7 +36,7 @@ def get_tvshows():
         url = "https://api.themoviedb.org/3/tv/popular?language=en-US&page=1"
         headers = {
             "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYTlmMTZmN2YwMWEyMWFkNmNmYjM5MGM5OTQwMDIxMiIsIm5iZiI6MTcyMzgyOTAxNi42MjIyMTUsInN1YiI6IjY2YmY4YWIyMmI4YTJjMGY4NzlhMGMzNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.HtobTRgSYU1TtLNaeAeYWRlW8Ed2SeyCVWvQfq0emoA"
+            "Authorization": f"Bearer {TMDB_API_KEY}"
         }
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -49,7 +54,7 @@ def get_movies():
         url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
         headers = {
             "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYTlmMTZmN2YwMWEyMWFkNmNmYjM5MGM5OTQwMDIxMiIsIm5iZiI6MTcyMzgyOTAxNi42MjIyMTUsInN1YiI6IjY2YmY4YWIyMmI4YTJjMGY4NzlhMGMzNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.HtobTRgSYU1TtLNaeAeYWRlW8Ed2SeyCVWvQfq0emoA"
+            "Authorization": f"Bearer {TMDB_API_KEY}"
         }
         response = requests.get(url, headers=headers)
         response.raise_for_status()
