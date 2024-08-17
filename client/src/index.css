@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 .animebg{
-  background-image: url('../public/animebg.webp');
+  background-image: url('/animebg.webp');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
 .tvshowbg{
-  background-image: url('../public/tvshowbg.jpg');
+  background-image: url('/tvshowbg.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
 .moviesbg{
-  background-image: url('../public/moviesbg.jpg');
+  background-image: url('/moviesbg.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
