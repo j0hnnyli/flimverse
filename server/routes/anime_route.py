@@ -5,7 +5,7 @@ anime_bp = Blueprint('anime', __name__)
 
 JIKAN_BASE_URL = 'https://api.jikan.moe/v4'
 
-@anime_bp.route('/anime/populars')
+@anime_bp.route('/animes/populars')
 def get_animes():
     try:
         response = requests.get(f'{JIKAN_BASE_URL}/top/anime')  # Adjust endpoint if needed
@@ -18,7 +18,7 @@ def get_animes():
     except requests.RequestException as e:
         return jsonify({'error': str(e)}), 500
     
-@anime_bp.route('/anime/<int:id>')
+@anime_bp.route('/animes/<int:id>')
 def get_anime(id):
     try:
         response = requests.get(f'{JIKAN_BASE_URL}/anime/{id}')
