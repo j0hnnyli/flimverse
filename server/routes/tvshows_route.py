@@ -4,16 +4,16 @@ import os
 
 TMDB_API_KEY = os.getenv('TMDB_API_READ_ACCESS')
 tvshows_bp = Blueprint('tvshows', __name__)
+BASE_URL = 'https://api.themoviedb.org/3/tv'
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {TMDB_API_KEY}"
+}
 
-
-@tvshows_bp.route('/api/tvshows')
+@tvshows_bp.route('/tvshows/populars')
 def get_tvshows():
     try:
-        url = "https://api.themoviedb.org/3/tv/popular?language=en-US&page=1"
-        headers = {
-            "accept": "application/json",
-            "Authorization": f"Bearer {TMDB_API_KEY}"
-        }
+        url = f"{BASE_URL}/popular?language=en-US&page=1"
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
@@ -23,3 +23,17 @@ def get_tvshows():
         })
     except requests.RequestException as e:
         return jsonify({'error': str(e)}), 500
+
+@tvshows_bp.route('/tvshows/<int:id>')
+def get_tvshow(id):
+    try:
+        url = f'{BASE_URL}/{id}'
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return jsonify({
+            'message' : f'Tv_Show {id}',
+            'data' : data
+        })
+    except requests.RequestException as e:
+        return jsonify({'error' : str(e)})
