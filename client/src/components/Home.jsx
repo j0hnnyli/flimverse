@@ -1,12 +1,7 @@
-import Logo from "./Logo"
 
 const Home = () => {
   return (
     <div className="flex h-screen relative">
-      <div className="absolute top-10 left-10 z-20 text-3xl text-orange-400 flex items-center"> 
-        <span className="mr-2"> <Logo/> </span>
-        <h1>FilmVerse</h1>
-      </div>
 
       <div className="w-[33.33%] h-full animebg relative flex items-center justify-center">
         <div className="absolute h-full w-full bg-black opacity-60"/>
