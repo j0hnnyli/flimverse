@@ -1,7 +1,14 @@
 import { useState } from "react"
 import Logo from "./Logo"
 import { Link } from 'react-router-dom'
-
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu"
 
 
 const Home = () => {
@@ -13,7 +20,7 @@ const Home = () => {
       url: '/animebg.webp'
     },
     {
-      name: 'Tv-Shows',
+      name: 'TV-Shows',
       url: '/tvshowbg.jpg'
     },
     {
@@ -28,16 +35,15 @@ const Home = () => {
     backgroundPosition: 'center',
     backgroundSize: 'cover',
   }
-
+  
   return (
-    <div 
-      style={backgroundImg}
-      className="flex h-screen relative"
-    >
+    <div style={backgroundImg} className="flex h-screen relative">
       <div className="absolute w-full h-full bg-black opacity-35"></div>
 
-      <div className="absolute bottom-10 right-10 z-20 text-3xl text-orange-400 flex items-center"> 
-        <span className="mr-2"> <Logo/> </span>
+      <div className="absolute bottom-10 right-10 z-20 text-3xl text-orange-400 flex items-center">
+        <span className="mr-2">
+          <Logo />
+        </span>
         <h1>FlimVerse</h1>
       </div>
 
@@ -45,36 +51,32 @@ const Home = () => {
         {slides[index].name}
       </div>
 
-      <div className="flex flex-col justify-center gap-5 bottom-10 left-10 absolute">
-        <div className="flex items-center">
-          <div 
-            onClick={() => setIndex(0)} 
-            className={`w-[100px] h-[100px] animebg cursor-pointer ${index === 0 && 'border-orange-400 border-2'}`}
-          ></div>
-          {index === 0 && <Link className="text-xl ml-5 py-2 px-4 bg-orange-400 text-white rounded-xl">Explore</Link>}
-        </div>
-
-        <div className="flex items-center">
-          <div 
-            onClick={() => setIndex(1)} 
-            className={`w-[100px] h-[100px] tvshowbg cursor-pointer ${index === 1 && 'border-orange-400 border-2'}`}
-          ></div>
-          {index === 1 && <Link className="text-xl ml-5 py-2 px-4 bg-orange-400 text-white rounded-xl">Explore</Link>}
-        </div>
-
-        <div className="flex items-center">
-          <div 
-            onClick={() => setIndex(2)} 
-            className={`w-[100px] h-[100px] moviesbg cursor-pointer ${index === 2 && 'border-orange-400 border-2'}`}
-          ></div>
-          {index === 2 && <Link className="text-xl ml-5 py-2 px-4 bg-orange-400 text-white rounded-xl">Explore</Link>}
-        </div>
-
+      <div className="absolute bottom-10 left-10 z-20">
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="text-xl text-orange-400 cursor-pointer">
+                Explore Categories
+              </NavigationMenuTrigger>
+              <NavigationMenuContent className="p-4 bg-gray-800 text-white rounded-lg">
+                {slides.map((slide, i) => (
+                  <Link
+                    to={slide.link}
+                    key={i}
+                    className={`flex items-center gap-3 p-3 bg-gray-700 rounded-lg hover:bg-gray-600 cursor-pointer mb-2`}
+                    onClick={() => setIndex(i)}
+                  >
+                    <div className={`w-[50px] h-[50px] bg-center bg-cover ${index === i ? 'border-orange-400 border-2' : ''}`} style={{ backgroundImage: `url(${slide.url})` }}></div>
+                    <span className="text-lg">{slide.name}</span>
+                  </Link>
+                ))}
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
-      
-
     </div>
-  )
-}
+  );
+};
 
 export default Home
