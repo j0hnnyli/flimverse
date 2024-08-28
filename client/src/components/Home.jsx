@@ -14,6 +14,9 @@ import {
 const Home = () => {
   const [index, setIndex] = useState(0);
 
+const Home = () => {
+
+
   const slides = [
     {
       name: 'Animes',
