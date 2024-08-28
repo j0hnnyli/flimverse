@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+.animebg{
+  background-image: url('../public/animebg.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.tvshowbg{
+  background-image: url('../public/tvshowbg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.moviesbg{
+  background-image: url('../public/moviesbg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
