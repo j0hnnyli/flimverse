@@ -18,6 +18,8 @@ module.exports = {
     },
     extend: {
       colors: {
+        flimverse_primary : '#f97316',
+        flimverse_secondary: '#1f2937',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
