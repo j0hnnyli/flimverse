@@ -36,7 +36,7 @@ def get_movie(id):
             'data' : data
         })
     except requests.RequestException as e:
-        return jsonify({'error' : str(e)})
+        return jsonify({'error' : str(e)}), 500
 
 @movies_bp.route('/movies/<string:value>/<int:page>')
 def get_movies_search(value, page):
@@ -50,5 +50,32 @@ def get_movies_search(value, page):
             'data' : data
         })
     except requests.RequestException as e:
-        return jsonify({'error' : str(e)})
+        return jsonify({'error' : str(e)}), 500
 
+@movies_bp.route('/movies/genre/<int:genre>/<int:page>')
+def get_movies_by_genre(genre,page):
+    try:
+        url = f'{BASE_URL}discover/movie?include_adult=false&include_video=true&language=en-US&page={page}&sort_by=popularity.desc&with_genres={genre}'
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return jsonify({
+            'message' : f'Genre {genre}',
+            'data' : data
+        })
+    except requests.RequestException as e:
+        return jsonify({'error' : str(e)}), 500
+
+@movies_bp.route('/movies/categories')
+def get_movies_categories():
+    try:
+        url = f'{BASE_URL}genre/movie/list?language=en'
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return jsonify({
+            'message' : f'Movies Categories',
+            'data' : data
+        })
+    except requests.RequestException as e:
+        return jsonify({'error' : str(e)}), 500

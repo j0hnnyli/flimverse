@@ -38,7 +38,7 @@ const NavBar = () => {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-xl bg-flimverse_primary text-white w-[150px]">
+                    <NavigationMenuTrigger className="text-[14px] bg-flimverse_primary text-white w-[100px]">
                         {slides[index].name}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent className="p-4 bg-flimverse_secondary text-white rounded-lg border-none">
