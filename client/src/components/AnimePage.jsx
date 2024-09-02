@@ -1,11 +1,11 @@
-// import AnimeNavBar from './AnimeNavBar';
+import AnimeNavBar from './AnimeNavBar';
 
 const AnimePage = () => {
   
 
   return (
     <div className="relative">
-      {/* <AnimeNavBar /> */}
+      <AnimeNavBar />
       <div 
         className="flex items-center justify-center h-screen bg-gray-100 animebg" 
       >
