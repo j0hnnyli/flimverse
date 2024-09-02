@@ -21,7 +21,7 @@ const NavBar = () => {
       },
       {
         name: 'TV-Shows',
-        img: '/tvshowbg.jpg',
+        img: '/tvshowbg.jpeg',
         path: '/tv'
       },
       {
