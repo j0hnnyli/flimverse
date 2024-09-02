@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
 import {
@@ -9,9 +8,12 @@ import {
     NavigationMenuContent,
     // NavigationMenuLink,
   } from "@/components/ui/navigation-menu"
+  import { useLocation } from 'react-router-dom';
 
 const NavBar = () => {
-    const [index, setIndex] = useState(0);
+    const {pathname} = useLocation();
+
+    const section = pathname === '/' ? 'Animes' : pathname === '/tv' ? 'Shows' : 'Movies'
 
     const slides = [
       {
@@ -20,7 +22,7 @@ const NavBar = () => {
         path: '/',
       },
       {
-        name: 'TV-Shows',
+        name: 'Shows',
         img: '/tvshowbg.jpeg',
         path: '/tv'
       },
@@ -39,7 +41,7 @@ const NavBar = () => {
                 <NavigationMenuList>
                     <NavigationMenuItem>
                     <NavigationMenuTrigger className="text-[14px] bg-flimverse_primary text-white w-[100px]">
-                        {slides[index].name}
+                        {section}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent className="p-4 bg-flimverse_secondary text-white rounded-lg border-none">
                         {slides.map((slide, i) => (
@@ -47,11 +49,10 @@ const NavBar = () => {
                             to={slide.path}
                             key={i}
                             className='flex items-center gap-3 p-3 bg-gray-700 rounded-lg hover:bg-gray-600 cursor-pointer mb-2'
-                            onClick={() => setIndex(i)}
                         >
                             <div 
                                 style={{ backgroundImage: `url(${slide.img})` }}
-                                className={`w-[50px] h-[50px] bg-center bg-cover ${index === i ? 'border-flimverse_primary border-2' : ''}`} 
+                                className={`w-[50px] h-[50px] bg-center bg-cover ${section === slide.name ? 'border-flimverse_primary border-2' : ''}`} 
                             ></div>
                             <span className="text-lg">{slide.name}</span>
                         </Link>
