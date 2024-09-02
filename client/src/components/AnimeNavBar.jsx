@@ -1,24 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 const AnimeNavBar = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [apiData, setApiData] = useState([]);
+  const searchResultsRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const data = await response.json();
+        setApiData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+  };
+
+  const filteredResults = searchInput
+    ? apiData.filter((item) =>
+        Object.values(item).join('').toLowerCase().includes(searchInput.toLowerCase())
+      )
+    : apiData;
+
+  const handleClickOutside = useCallback((event) => {
+    if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
+      setSearchInput('');
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   return (
     <nav className="bg-flimverse_primary text-white py-2 px-4 fixed top-[82px] w-full z-40 flex items-center justify-between">
       <div className="flex items-center space-x-10">
-        <Link to="/" className="hover:underline">
-          Action
-        </Link>
-        <Link to="/" className="hover:underline">
-          Mystery
-        </Link>
-        <Link to="/" className="hover:underline">
-          Adventure
-        </Link>
-        <Link to="/" className="hover:underline">
-          Categories
-        </Link>
+        <Link to="/" className="hover:underline">Action</Link>
+        <Link to="/" className="hover:underline">Mystery</Link>
+        <Link to="/" className="hover:underline">Adventure</Link>
+        <Link to="/" className="hover:underline">Categories</Link>
       </div>
 
       <div className="relative flex items-center">
@@ -26,11 +57,9 @@ const AnimeNavBar = () => {
           <input
             type="search"
             aria-label="Search"
-            className={`peer cursor-pointer relative z-10 h-12 rounded-full border bg-transparent pl-12 outline-none transition-all duration-300 ease-in-out ${
-              isSearchOpen ? 'w-48 pr-12' : 'w-12 pr-0'
-            } border-white focus:border-white focus:pl-16 focus:pr-4 placeholder-white`}
-            onFocus={() => setIsSearchOpen(true)}
-            onBlur={() => setIsSearchOpen(false)}
+            value={searchInput}
+            onChange={(e) => searchItems(e.target.value)}
+            className={`peer cursor-pointer relative z-10 h-12 rounded-full border bg-transparent pl-12 outline-none transition-all duration-300 ease-in-out ${searchInput ? 'w-48 pr-12' : 'w-12 pr-0'} border-white focus:border-white focus:pl-16 focus:pr-4 placeholder-white`}
             placeholder="Search..."
           />
           <svg
@@ -49,6 +78,24 @@ const AnimeNavBar = () => {
           </svg>
         </form>
       </div>
+
+      {searchInput && (
+        <div
+          ref={searchResultsRef}
+          className="absolute top-full left-0 mt-2 w-full bg-white text-black p-4 rounded shadow-lg"
+        >
+          {filteredResults.length > 0 ? (
+            filteredResults.map((item) => (
+              <div key={item.id} className="mb-2">
+                <p className="font-bold">{item.name}</p>
+                <p>{item.email}</p>
+              </div>
+            ))
+          ) : (
+            <p>No results found</p>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
