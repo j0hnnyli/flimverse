@@ -144,7 +144,9 @@ const AnimeNavBar = () => {
             ) 
           }
         </div>
-      ) : null}
+      ) : (
+        <p>No results found</p>
+      )}
 
     </nav>
   );
