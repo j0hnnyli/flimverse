@@ -3,6 +3,7 @@ import AnimePage from './components/AnimePage'
 import TVPage from './components/TVPage'
 import MoviesPage from './components/MoviesPage'
 import NavBar from './components/NavBar'
+import AnimeNavBar from './components/AnimeNavBar'
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
     <>
       <BrowserRouter>
         <NavBar />
+        <AnimeNavBar />
           <Routes>
             <Route path='/' element={ <AnimePage/> }/>
             <Route path='/tv' element={ <TVPage/> }/>
