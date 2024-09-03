@@ -175,7 +175,6 @@ const AnimeNavBar = () => {
           }
         </div>
       )}
-
     </nav>
   );
 };
