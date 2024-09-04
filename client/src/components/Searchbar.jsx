@@ -1,18 +1,35 @@
+import { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types'
-import {forwardRef} from 'react'
 import { Loader } from "lucide-react";
 
 const Searchbar =({
   searchInput, setOpenSearchBar, setSearchInput,
-  openSearchBar, isLoading, section, }
-  , ref
+  openSearchBar, isLoading, section }
 ) => {
+  const searchBarRef = useRef(null);
+
+  const handleClickOutside = useCallback((event) => {
+    if (
+      (searchBarRef.current && !searchBarRef.current.contains(event.target))
+    ) {
+      setSearchInput("");
+      setOpenSearchBar(false);
+    }
+  }, [setOpenSearchBar, setSearchInput]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   return (
     <div className="flex items-center">
         <form className="">
           <input
-            ref={ref}
+            ref={searchBarRef}
             type="search"
             aria-label="Search"
             value={searchInput}
@@ -56,4 +73,4 @@ Searchbar.propTypes = {
   setSearchInput: PropTypes.func.isRequired
 }
 
-export default forwardRef(Searchbar)
+export default Searchbar
