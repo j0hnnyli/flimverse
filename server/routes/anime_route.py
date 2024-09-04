@@ -26,7 +26,7 @@ def get_anime(id):
         data = response.json()
         return jsonify({
             'message' : f'Anime {id}',
-            'data' : data
+            'data' : data 
         })
     except requests.RequestException as e:
         return jsonify({'error': str(e)})
