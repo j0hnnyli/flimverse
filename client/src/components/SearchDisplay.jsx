@@ -1,16 +1,31 @@
 import  PropTypes  from 'prop-types'
-import { forwardRef } from 'react'
+import { useRef, useEffect, useCallback } from 'react';
 
-const SearchDisplay = (
-  {showResults, query, isError, isLoading, filteredResults}, 
-  ref
-) => {
+const SearchDisplay = ({showResults, query, isError, isLoading, filteredResults, setShowResults, setIsError}) => {
+  const searchResultsRef = useRef(null);
+
+  const handleClickOutside = useCallback((event) => {
+    if (
+      (searchResultsRef.current && !searchResultsRef.current.contains(event.target))
+    ) {
+      setShowResults(false);
+      setIsError(false);
+    }
+  }, [setShowResults, setIsError]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   return (
     <>
       {showResults && query && (
         <div
-          ref={ref}
+          ref={searchResultsRef}
           className="absolute top-14 left-0 mt-2 w-full bg-white text-black p-4 rounded shadow-lg max-h-[60vh] overflow-auto"
         >
           {!isError && !isLoading && (
@@ -54,6 +69,8 @@ SearchDisplay.propTypes = {
   isError: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   filteredResults: PropTypes.array.isRequired,
+  setShowResults: PropTypes.func.isRequired,
+  setIsError: PropTypes.func.isRequired,
 }
 
-export default forwardRef(SearchDisplay)
+export default SearchDisplay

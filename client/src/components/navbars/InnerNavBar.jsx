@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import { backendUrl } from "@/lib/utils";
@@ -15,8 +15,6 @@ const InnerNavBar = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const searchResultsRef = useRef(null);
-  const searchBarRef = useRef(null);
   const [query] = useDebounce(searchInput, 500);
 
   const { pathname } = useLocation();
@@ -36,18 +34,6 @@ const InnerNavBar = () => {
 
     return matchAnimeName || matchMoiveName || matchShowsName;
   });
-
-  const handleClickOutside = useCallback((event) => {
-    if (
-      (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) ||
-      (searchBarRef.current && !searchBarRef.current.contains(event.target))
-    ) {
-      setSearchInput("");
-      setIsError(false);
-      setOpenSearchBar(false);
-      setShowResults(false);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,23 +65,15 @@ const InnerNavBar = () => {
   }, [query, section]);
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [handleClickOutside]);
-
-  useEffect(() => {
     if (
       !isLoading &&
       !isError &&
       apiData.length > 0 &&
-      searchInput.length > 0
+      query
     ) {
       setShowResults(true);
     }
-  }, [isLoading, isError, apiData, searchInput]);
+  }, [isLoading, isError, apiData, query]);
 
   return (
     <nav className={`
@@ -120,7 +98,6 @@ const InnerNavBar = () => {
       </div>
 
       <Searchbar
-        ref={searchBarRef}
         searchInput={searchInput}
         setOpenSearchBar={setOpenSearchBar}
         setSearchInput={setSearchInput}
@@ -130,7 +107,8 @@ const InnerNavBar = () => {
       />
 
       <SearchDisplay
-        ref={searchResultsRef}
+        setShowResults={setShowResults}
+        setIsError={setIsError}
         filteredResults={filteredResults}
         showResults={showResults}
         query={query}
