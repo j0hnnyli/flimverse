@@ -10,7 +10,7 @@ import {
   } from "@/components/ui/navigation-menu"
   import { useLocation } from 'react-router-dom';
 
-const NavBar = () => {
+const GlobalNavBar = () => {
     const {pathname} = useLocation();
 
     const section = pathname === '/' ? 'Animes' : pathname === '/tv' ? 'Shows' : 'Movies'
@@ -35,12 +35,22 @@ const NavBar = () => {
 
     return (
         <nav 
-            className='flex items-center justify-between px-6 py-4  text-flimverse_primary fixed top-0 z-50 w-full bg-flimverse_secondary'
+            className={`
+                ${ section === 'Animes' && 'text-flimverse_anime_primary'}
+                ${ section === 'Shows' && 'text-flimverse_shows_primary'}
+                ${ section === 'Movies' && 'text-flimverse_movies_primary'}
+                flex items-center justify-between px-6 py-4   fixed top-0 z-50 w-full bg-flimverse_secondary
+            `}
         >
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-[14px] bg-flimverse_primary text-white w-[100px]">
+                    <NavigationMenuTrigger className={`
+                        ${ section === 'Animes' && 'bg-flimverse_anime_primary'}
+                        ${ section === 'Shows' && 'bg-flimverse_shows_primary'}
+                        ${ section === 'Movies' && 'bg-flimverse_movies_primary'}
+                        text-[14px] text-white w-[100px]
+                    `}>
                         {section}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent className="p-4 bg-flimverse_secondary text-white rounded-lg border-none">
@@ -52,7 +62,7 @@ const NavBar = () => {
                         >
                             <div 
                                 style={{ backgroundImage: `url(${slide.img})` }}
-                                className={`w-[50px] h-[50px] bg-center bg-cover ${section === slide.name ? 'border-flimverse_primary border-2' : ''}`} 
+                                className={`w-[50px] h-[50px] bg-center bg-cover ${section === slide.name ? 'border-flimverse_anime_primary border-2' : ''}`} 
                             ></div>
                             <span className="text-lg">{slide.name}</span>
                         </Link>
@@ -62,11 +72,11 @@ const NavBar = () => {
                 </NavigationMenuList>
             </NavigationMenu> 
 
-            <div className="text-xl text-flimverse_primary flex items-center">
+            <div className="flex items-center">
                 <span className="mr-2">
-                <Logo />
+                <Logo section={section}/>
                 </span>
-                <h1>FlimVerse</h1>
+                <h1 className='text-2xl font-bold tracking-widest'>FlimVerse</h1>
             </div>
 
             <Link to='/mywatchlist'>My List</Link>
@@ -74,5 +84,5 @@ const NavBar = () => {
     );
 }
   
-  export default NavBar;
+  export default GlobalNavBar;
   
