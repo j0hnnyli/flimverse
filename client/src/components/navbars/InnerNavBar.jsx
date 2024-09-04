@@ -69,11 +69,11 @@ const InnerNavBar = () => {
       !isLoading &&
       !isError &&
       apiData.length > 0 &&
-      query
+      searchInput.length > 0
     ) {
       setShowResults(true);
     }
-  }, [isLoading, isError, apiData, query]);
+  }, [isLoading, isError, apiData, searchInput]);
 
   return (
     <nav className={`
